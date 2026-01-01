@@ -1,7 +1,12 @@
+import MasterLoayout from "../components/masterLayout/MasterLoayout"
 
 const DashBoardPage = () => {
   return (
-    <div>DashBoardPage</div>
+    <>
+      <MasterLoayout>
+        <h1>DashBoard</h1>
+    </MasterLoayout>
+    </>
   )
 }
 

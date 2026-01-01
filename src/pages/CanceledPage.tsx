@@ -1,7 +1,12 @@
+import MasterLoayout from "../components/masterLayout/MasterLoayout"
 
 const CanceledPage = () => {
   return (
-    <div>CanceledPage</div>
+    <>
+      <MasterLoayout>
+        Canceled
+    </MasterLoayout>
+    </>
   )
 }
 

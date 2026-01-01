@@ -1,7 +1,12 @@
+import MasterLoayout from "../components/masterLayout/MasterLoayout"
 
 const ProfilePage = () => {
   return (
-    <div>ProfilePage</div>
+    <>
+      <MasterLoayout>
+        Porfile
+      </MasterLoayout>
+    </>
   )
 }
 

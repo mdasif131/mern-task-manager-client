@@ -1,8 +1,14 @@
-
+import "@/assets/css/progress.css"
 const LazyLoader = () => {
   return (
-    <div>LazyLoader</div>
-  )
-}
+    <>
+      <div className="lodingOverlay">
+        <div className="lineProgress">
+          <div className="ineterminate"></div>
+        </div>
+      </div>
+    </>
+  );
+};
 
-export default LazyLoader
+export default LazyLoader;

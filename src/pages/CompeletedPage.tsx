@@ -1,7 +1,12 @@
+import MasterLoayout from "../components/masterLayout/MasterLoayout"
 
 const CompeletedPage = () => {
   return (
-    <div>CompeletedPage</div>
+    <>
+      <MasterLoayout>
+        Completed
+      </MasterLoayout>
+    </>
   )
 }
 

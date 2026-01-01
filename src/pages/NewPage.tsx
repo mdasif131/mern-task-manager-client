@@ -1,7 +1,12 @@
+import MasterLoayout from "../components/masterLayout/MasterLoayout"
 
 const NewPage = () => {
   return (
-    <div>NewPage</div>
+    <>
+      <MasterLoayout>
+        New task
+      </MasterLoayout>
+    </>
   )
 }
 

@@ -1,7 +1,12 @@
+import MasterLoayout from "../components/masterLayout/MasterLoayout"
 
 const CreatePage = () => {
   return (
-    <div>CreatePage</div>
+    <>
+      <MasterLoayout>
+        <h1>New</h1>
+      </MasterLoayout>
+    </>
   )
 }
 

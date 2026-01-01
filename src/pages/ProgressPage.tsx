@@ -1,7 +1,12 @@
+import MasterLoayout from "../components/masterLayout/MasterLoayout"
 
 const ProgressPage = () => {
   return (
-    <div>ProgressPage</div>
+    <>
+      <MasterLoayout>
+        Progress
+    </MasterLoayout>
+    </>
   )
 }
 

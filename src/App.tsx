@@ -1,14 +1,16 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import FullScreenLoader from './components/masterLayout/FullScreenLoader';
 import CompeletedPage from './pages/CompeletedPage';
 import CreatePage from './pages/CreatePage';
 import DashBoardPage from './pages/DashBoardPage';
+import ForgetPssPage from './pages/ForgetPssPage';
+import LoginPage from './pages/LoginPage';
 import NewPage from './pages/NewPage';
+import Page404 from './pages/Page404';
 import ProfilePage from './pages/ProfilePage';
 import ProgressPage from './pages/ProgressPage';
-import LoginPage from './pages/LoginPage';
 import RegistrationPage from './pages/RegistrationPage';
-import ForgetPssPage from './pages/ForgetPssPage';
-import Page404 from './pages/Page404';
+import CanceledPage from './pages/CanceledPage';
 const App = () => {
   return (
     <>
@@ -19,6 +21,7 @@ const App = () => {
           <Route path="/all" element={<NewPage />} />
           <Route path="/progress" element={<ProgressPage />} />
           <Route path="/completed" element={<CompeletedPage />} />
+          <Route path="/canceled" element={<CanceledPage />} />
           <Route path="/profile" element={<ProfilePage />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/registration" element={<RegistrationPage />} />
@@ -26,6 +29,7 @@ const App = () => {
           <Route path="*" element={<Page404 />} />
         </Routes>
       </BrowserRouter>
+      <FullScreenLoader />
     </>
   );
 };
