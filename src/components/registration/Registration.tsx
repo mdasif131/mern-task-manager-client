@@ -1,11 +1,17 @@
 import { motion } from 'motion/react';
 import { Link } from 'react-router-dom';
 
+import { useRef } from 'react';
+import { RegistrationRequest } from '../../APIRequest/apiRequest';
+import {
+  ErrorToast,
+  IsEmail,
+  IsEmpty,
+  IsMobile
+} from '../../helper/formHelper';
 import { Button } from '../ui/button';
 import { Card, CardContent, CardFooter, CardTitle } from '../ui/card';
 import { Input } from '../ui/input';
-import { useRef } from 'react';
-import { ErrorToast, IsEmail, IsEmpty, IsMobile, SuccessToast } from '../../helper/formHelper';
 const Registration = () => {
   const emailRef = useRef<HTMLInputElement>(null);
   const firstNameRef = useRef<HTMLInputElement>(null);
@@ -26,11 +32,12 @@ const Registration = () => {
     } else if (IsEmpty(lastName)) {
       ErrorToast('Last Name Required');
     } else if (!IsMobile(mobile)) {
-      ErrorToast('Valid Mobile Required')
+      ErrorToast('Valid Mobile Required');
     } else if (IsEmpty(password)) {
-      ErrorToast('Password Required')
+      ErrorToast('Password Required');
     } else {
-      SuccessToast("Successfully")
+      const photo = ''; // Define a default or empty value for photo
+      RegistrationRequest(email, firstName, lastName, mobile, password, photo)
     }
   };
 
