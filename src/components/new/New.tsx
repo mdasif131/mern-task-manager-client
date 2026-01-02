@@ -1,8 +1,15 @@
+import CommonCard from "../common/CommonCard";
 
 const New = () => {
   return (
-    <div>New</div>
-  )
+    <div>
+      <CommonCard
+        title="New Task"
+        description="Description"
+        variant="newtaskbtn"
+      />
+    </div>
+  );
 }
 
 export default New
