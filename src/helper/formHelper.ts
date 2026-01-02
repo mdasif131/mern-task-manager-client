@@ -14,7 +14,7 @@ class FormHelper {
     return !EmailRegex.test(value);
   }
   ErrorToast(msg: string): void {
-    toast.error(msg, { position: 'bottom-center' });
+    toast.error(msg, { position: 'top-center' });
   } 
 
   SuccessToast(msg: string): void{
