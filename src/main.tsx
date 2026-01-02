@@ -2,9 +2,10 @@ import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import './assets/css/index.css'
 import App from './App.tsx'
-
+import { Toaster } from 'react-hot-toast';
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <App />
-  </StrictMode>,
-)
+    <Toaster position="bottom-center" reverseOrder={false} />
+  </StrictMode>
+);

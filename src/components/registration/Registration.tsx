@@ -5,7 +5,7 @@ import { Button } from '../ui/button';
 import { Card, CardContent, CardFooter, CardTitle } from '../ui/card';
 import { Input } from '../ui/input';
 import { useRef } from 'react';
-
+import { ErrorToast, IsEmail, IsEmpty, IsMobile, SuccessToast } from '../../helper/formHelper';
 const Registration = () => {
   const emailRef = useRef<HTMLInputElement>(null);
   const firstNameRef = useRef<HTMLInputElement>(null);
@@ -19,6 +19,19 @@ const Registration = () => {
     const lastName = lastNameRef.current?.value || '';
     const mobile = mobileRef.current?.value || '';
     const password = passwordRef.current?.value || '';
+    if (IsEmail(email)) {
+      ErrorToast('Valid Email Adress Required');
+    } else if (IsEmpty(firstName)) {
+      ErrorToast('First Name Required');
+    } else if (IsEmpty(lastName)) {
+      ErrorToast('Last Name Required');
+    } else if (!IsMobile(mobile)) {
+      ErrorToast('Valid Mobile Required')
+    } else if (IsEmpty(password)) {
+      ErrorToast('Password Required')
+    } else {
+      SuccessToast("Successfully")
+    }
   };
 
   return (
@@ -146,7 +159,7 @@ const Registration = () => {
               duration: 0.4,
               ease: 'easeInOut',
             }}
-            className='w-full'
+            className="w-full"
           >
             <Button
               onClick={onRegistration}

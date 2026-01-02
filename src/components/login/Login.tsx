@@ -3,7 +3,7 @@ import { Button } from '../ui/button';
 import { Card, CardContent, CardFooter, CardTitle } from '../ui/card';
 import { Input } from '../ui/input';
 import { motion } from 'motion/react';
-const MotionButton =motion(Button)
+
 const loginVariant = {
   initial: { y: 4, opacity: 0 },
   open: { y: 0, opacity: 1 },
@@ -45,14 +45,16 @@ const Login = () => {
           </motion.form>
         </CardContent>
         <CardFooter className="flex-col gap-2">
-          <MotionButton
+          <motion.div
             initial={{ y: -20, opacity: 0, scale: 0.9 }}
             whileInView={{ y: 0, opacity: 1, scale: 1 }}
             transition={{ duration: 0.5, ease: 'easeInOut' }}
-            className="w-full bg-purple-500 text-white inline-flex items-center justify-center py-2 font-semibold rounded-lg hover:bg-purple-950 hoverTransition"
+            className='w-full'
           >
-            Next
-          </MotionButton>
+            <Button className="w-full bg-purple-500 text-white inline-flex items-center justify-center py-2 font-semibold rounded-lg hover:bg-purple-950 hoverTransition">
+              Next
+            </Button>
+          </motion.div>
           <div className="flex flex-col items-center justify-center text-[16px] text-slate-500 py-2">
             <Link
               to={'/registration'}
