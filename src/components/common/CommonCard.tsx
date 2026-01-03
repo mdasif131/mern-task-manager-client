@@ -12,17 +12,19 @@ import { Calendar, Trash2, PencilLine } from 'lucide-react';
 interface CommonCardProps {
   title: string;
   description: string;
+  status?: string;
+  createDate?: string;
   variant: 'default' | 'destructive' | 'greenbtn' | 'skybtn' | 'newtaskbtn';
 }
 
-const CommonCard: React.FC<CommonCardProps> = ({ title, description, variant }) => {
+const CommonCard: React.FC<CommonCardProps> = ({ title, description,createDate,status, variant }) => {
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5, ease: 'easeOut' }}
     >
-      <Card className="max-w-md">
+      <Card className="w-full">
         <CardHeader>
           <motion.div
             initial={{ opacity: 0, x: -15 }}
@@ -51,9 +53,9 @@ const CommonCard: React.FC<CommonCardProps> = ({ title, description, variant }) 
             className="flex items-center justify-between w-full"
           >
             <div className="flex items-center justify-center gap-4">
-              <div className="inline-flex items-center gap-2">
+              <div className="inline-flex items-center gap-2 text-sm sm:text-[16px]">
                 <Calendar size={18} />
-                <span>01/02/2026</span>
+                <span>{createDate}</span>
               </div>
               <button className="text-red-400">
                 <PencilLine size={18} />
@@ -67,7 +69,7 @@ const CommonCard: React.FC<CommonCardProps> = ({ title, description, variant }) 
               whileTap={{ scale: 0.98 }}
               transition={{ type: 'spring', stiffness: 300, damping: 10 }}
             >
-              <Button variant={variant}>STATUS</Button>
+              <Button variant={variant}>{status}</Button>
             </motion.div>
           </motion.div>
         </CardFooter>

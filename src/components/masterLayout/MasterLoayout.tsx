@@ -39,7 +39,7 @@ const MasterLoayout = ({ children }: { children: ReactNode }) => {
   const [isOpen, setIsOpen] = useState(true);
 
   return (
-    <section className=" mx-auto ">
+    <section className="w-full mx-auto ">
       {/* Nav bar  */}
       <div>
         <nav className="w-full  px-4 md:px-8 py-4 bg-white shadow-lg ">
@@ -62,7 +62,7 @@ const MasterLoayout = ({ children }: { children: ReactNode }) => {
         </nav>
       </div>
 
-      <div className="grid w-full grid-cols-12 border-t-2 ">
+      <div className="mx-auto grid w-full grid-cols-12 border-t-2 ">
         {/* Sidebar  */}
         <motion.div
           initial="closed"
@@ -198,7 +198,7 @@ const MasterLoayout = ({ children }: { children: ReactNode }) => {
         {/* Content  */}
         <div
           className={`w-full mx-auto py-8 px-4! ${
-            isOpen ? 'col-span-10' : 'col-span-12 w-full'
+            isOpen ? 'col-span-10' : 'col-span-12 w-full '
           }`}
         >
           {children}
