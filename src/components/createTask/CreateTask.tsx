@@ -1,3 +1,4 @@
+import { useRef } from 'react';
 import { Button } from '../ui/button';
 import {
   Card,
@@ -9,8 +10,29 @@ import {
 import { Input } from '../ui/input';
 import { Textarea } from '../ui/textarea';
 import { motion } from 'motion/react';
+import { ErrorToast, IsEmpty } from '../../helper/formHelper';
+import { useNavigate } from 'react-router-dom';
+import { CreateNewRequest } from '../../APIRequest/apiRequest';
 
 const CreateTask = () => {
+  const navigate =useNavigate()
+  const titleRef = useRef<HTMLInputElement>(null)
+  const descriptionRef = useRef<HTMLTextAreaElement>(null);
+  const createNewHandler = async () => {
+    const title = titleRef.current?.value || " "
+    const description = descriptionRef.current?.value || ""
+    if (IsEmpty(title)) {
+      ErrorToast("Title Required")
+    } else if (IsEmpty(description)) {
+      ErrorToast("Description Required")
+    } else {
+      const result = await CreateNewRequest(title, description) 
+      if (result) {
+        navigate("/all")
+      }
+    }
+}
+
   return (
     <div className="flex items-center justify-center p-4">
       <motion.div
@@ -48,6 +70,7 @@ const CreateTask = () => {
                   placeholder="Task Name"
                   className="focus-visible:ring-purple-500 transition-all duration-300 hover:ring-2 hover:ring-purple-200"
                   type="text"
+                  ref={input => { titleRef.current = input}}
                   required
                 />
               </motion.div>
@@ -59,7 +82,8 @@ const CreateTask = () => {
               >
                 <Textarea
                   className="focus-visible:ring-purple-500 transition-all duration-300 hover:ring-2 hover:ring-purple-200 min-h-30"
-                  placeholder="Type your message here..."
+                  placeholder="Type your message here..." 
+                  ref={input=>{descriptionRef.current = input;}}
                 />
               </motion.div>
             </motion.form>
@@ -69,15 +93,16 @@ const CreateTask = () => {
             <motion.div
               initial={{ opacity: 0, scale: 0.8 }}
               animate={{ opacity: 1, scale: 1 }}
-              transition={{ 
-                delay: 0.6, 
+              transition={{
+                delay: 0.6,
                 duration: 0.3,
-                type: "spring",
-                stiffness: 200
+                type: 'spring',
+                stiffness: 200,
               }}
-              className='ml-auto'
+              className="ml-auto"
             >
-              <Button
+              <Button 
+                onClick={createNewHandler}
                 variant="secondary"
                 className=" bg-linear-to-r from-purple-500 to-indigo-500 hover:from-purple-600 hover:to-indigo-600 text-white shadow-lg hover:shadow-xl hoverTransition transform hover:-translate-y-0.5"
               >
