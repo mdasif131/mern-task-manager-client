@@ -3,12 +3,32 @@ import { Button } from '../ui/button';
 import { Card, CardContent, CardFooter, CardTitle } from '../ui/card';
 import { Input } from '../ui/input';
 import { motion } from 'motion/react';
+import { useRef } from 'react';
+import { ErrorToast, IsEmail, IsEmpty } from '../../helper/formHelper';
+import { LoginRequest } from '../../APIRequest/apiRequest';
 
 const loginVariant = {
   initial: { y: 4, opacity: 0 },
   open: { y: 0, opacity: 1 },
 };
 const Login = () => {
+  const emailRef =useRef<HTMLInputElement>(null)
+  const passRef = useRef<HTMLInputElement>(null) 
+  
+  const submitLogin = async () => {
+    const email = emailRef.current?.value || " ";
+    const password = passRef.current?.value || " ";
+    if (IsEmail(email)) {
+      ErrorToast("Invalid Email Address")
+    } else if (IsEmpty(password)) {
+      ErrorToast('Password Required')
+    } else {
+      const result = await LoginRequest(email, password);
+      if (result) {
+        window.location.href="/"
+      }
+    }
+  }
   return (
     <div className="w-full h-screen flex justify-center items-center">
       <Card className="w-full max-w-md">
@@ -29,6 +49,7 @@ const Login = () => {
                 type="email"
                 placeholder="User Email"
                 className="focus-visible:ring-purple-500"
+                ref={input => {emailRef.current =input}}
                 required
               />
             </div>
@@ -39,6 +60,7 @@ const Login = () => {
                 placeholder="User password"
                 className="focus-visible:ring-purple-500"
                 type="password"
+                ref={input=>{passRef.current = input}}
                 required
               />
             </div>
@@ -49,9 +71,9 @@ const Login = () => {
             initial={{ y: -20, opacity: 0, scale: 0.9 }}
             whileInView={{ y: 0, opacity: 1, scale: 1 }}
             transition={{ duration: 0.5, ease: 'easeInOut' }}
-            className='w-full'
+            className="w-full"
           >
-            <Button className="w-full bg-purple-500 text-white inline-flex items-center justify-center py-2 font-semibold rounded-lg hover:bg-purple-950 hoverTransition">
+            <Button onClick={submitLogin} className="w-full bg-purple-500 text-white inline-flex items-center justify-center py-2 font-semibold rounded-lg hover:bg-purple-950 hoverTransition">
               Next
             </Button>
           </motion.div>

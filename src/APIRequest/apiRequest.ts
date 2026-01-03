@@ -1,8 +1,9 @@
-import axios from 'axios'
+import axios from 'axios';
 import { ErrorToast, SuccessToast } from '../helper/formHelper';
-const BaseURL = 'https://mern-task-manager-backend-cyan.vercel.app/api/v1';
-import { store } from '../redux/store/store'
+import { setToken, setUserInfo } from '../helper/sessionHelper';
 import { HideLoader, ShowLoader } from '../redux/state_slice/settingSlice';
+import { store } from '../redux/store/store';
+const BaseURL = 'https://mern-task-manager-backend-cyan.vercel.app/api/v1';
 interface RegistrationRequestBody {
   email: string;
   firstName: string;
@@ -11,8 +12,45 @@ interface RegistrationRequestBody {
   password: string;
   photo: string;
 }
-
-export async function RegistrationRequest(email: string, firstName: string, lastName: string, mobile: string, password: string, photo: string): Promise<boolean> {
+interface LoginRequestBody {
+  email: string;
+  password: string;
+}
+export async function LoginRequest(
+  email: string,
+  password: string
+): Promise<boolean> {
+  store.dispatch(ShowLoader());
+  let URL: string = BaseURL + '/login';
+  let PostBody: LoginRequestBody = { email: email, password: password };
+  try {
+    const res = await axios.post(URL, PostBody);
+    store.dispatch(HideLoader());
+    if (res.status === 200 && res.data?.status === 'success') {
+      setToken( res.data?.token);
+      setUserInfo(res.data?.data);
+      SuccessToast('Login Success');
+      console.log(res.data?.data);
+      console.log(res.data?.token);
+      return true;
+    } else {
+      ErrorToast(res.data.message || 'Something went wrong');
+      return false;
+    }
+  } catch (error: any) {
+    store.dispatch(HideLoader());
+    ErrorToast(error?.response?.data?.message || 'Something went wrong');
+    return false;
+  }
+}
+export async function RegistrationRequest(
+  email: string,
+  firstName: string,
+  lastName: string,
+  mobile: string,
+  password: string,
+  photo: string
+): Promise<boolean> {
   store.dispatch(ShowLoader());
   let URL: string = BaseURL + '/register';
   let PostBody: RegistrationRequestBody = {
@@ -22,7 +60,7 @@ export async function RegistrationRequest(email: string, firstName: string, last
     mobile: mobile,
     password: password,
     photo: photo,
-  }; 
+  };
   try {
     const res = await axios.post(URL, PostBody);
     store.dispatch(HideLoader());

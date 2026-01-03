@@ -1,5 +1,5 @@
 import { motion } from 'motion/react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 import { useRef } from 'react';
 import { RegistrationRequest } from '../../APIRequest/apiRequest';
@@ -17,9 +17,11 @@ const Registration = () => {
   const firstNameRef = useRef<HTMLInputElement>(null);
   const lastNameRef = useRef<HTMLInputElement>(null);
   const mobileRef = useRef<HTMLInputElement>(null);
-  const passwordRef = useRef<HTMLInputElement>(null);
+  const passwordRef = useRef<HTMLInputElement>(null); 
 
-  const onRegistration = () => {
+  const navigate = useNavigate();
+
+  const onRegistration = async () => {
     const email = emailRef.current?.value || '';
     const firstName = firstNameRef.current?.value || '';
     const lastName = lastNameRef.current?.value || '';
@@ -37,7 +39,10 @@ const Registration = () => {
       ErrorToast('Password Required');
     } else {
       const photo = ''; // Define a default or empty value for photo
-      RegistrationRequest(email, firstName, lastName, mobile, password, photo)
+       const result = await RegistrationRequest(email, firstName, lastName, mobile, password, photo);
+      if (result) {
+        navigate('/login');
+      }
     }
   };
 
