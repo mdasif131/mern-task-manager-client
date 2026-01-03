@@ -3,16 +3,24 @@ import { ErrorToast, SuccessToast } from '../helper/formHelper';
 import { getToken, setToken, setUserInfo } from '../helper/sessionHelper';
 import { HideLoader, ShowLoader } from '../redux/state_slice/settingSlice';
 import { store } from '../redux/store/store';
-import { SetCanceledTask, SetCompletedTask, SetNewTask, SetProgressTask } from '../redux/state_slice/taskSlice';
-import type { CreateTaskRequestBody, LoginRequestBody, RegistrationRequestBody } from '../helper/types';
+import {
+  SetCanceledTask,
+  SetCompletedTask,
+  SetNewTask,
+  SetProgressTask,
+} from '../redux/state_slice/taskSlice';
+import type {
+  CreateTaskRequestBody,
+  LoginRequestBody,
+  RegistrationRequestBody,
+} from '../helper/types';
+import { SetSummary } from '../redux/state_slice/summarySlice';
 const BaseURL = 'https://mern-task-manager-backend-cyan.vercel.app/api/v1';
 const AxiosHeader = {
   headers: {
     Authorization: `Bearer ${getToken()}`,
   },
 };
-
-
 
 export async function LoginRequest(
   email: string,
@@ -105,7 +113,9 @@ export async function CreateNewRequest(
 }
 
 type TaskStatus = 'New' | 'Completed' | 'Progress' | 'Canceled';
-export async function GetTaskRequestByStatus(status: TaskStatus): Promise<boolean> {
+export async function GetTaskRequestByStatus(
+  status: TaskStatus
+): Promise<boolean> {
   store.dispatch(ShowLoader());
   let URL: string = `${BaseURL}/list-task-by-status/${status}`;
 
@@ -136,6 +146,21 @@ export async function GetTaskRequestByStatus(status: TaskStatus): Promise<boolea
     ErrorToast(error?.response?.data?.message || 'Something went wrong');
     return false;
   } finally {
-    store.dispatch(HideLoader()); 
+    store.dispatch(HideLoader());
+  }
+}
+
+export async function SummaryRequest(): Promise<boolean> {
+  store.dispatch(ShowLoader());
+  const URL: string = `${BaseURL}/task-status-count`;
+  try {
+    const res = await axios.get(URL, AxiosHeader);
+    store.dispatch(SetSummary(res.data?.data));
+    return true;
+  } catch (error: any) {
+    ErrorToast(error?.response?.data?.message || 'Something went wrong');
+    return false;
+  } finally {
+    store.dispatch(HideLoader());
   }
 }

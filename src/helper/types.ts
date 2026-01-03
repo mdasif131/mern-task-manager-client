@@ -22,4 +22,5 @@ export interface Task {
   status: 'New' | 'Completed' | 'Progress' | 'Canceled';
   createDate?: string;
   // Add other fields from your API response
-}
+} 
+
