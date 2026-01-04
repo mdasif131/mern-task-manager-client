@@ -4,20 +4,52 @@ import { useSelector } from 'react-redux';
 import type { RootState } from '../../redux/store/store';
 import { Input } from '../ui/input';
 import { Button } from '../ui/button';
-
+import { ErrorToast, getBase64, SuccessToast } from '../../helper/formHelper';
 
 const Profile = () => {
-   const emailRef = useRef<HTMLInputElement>(null);
-   const firstNameRef = useRef<HTMLInputElement>(null);
-   const lastNameRef = useRef<HTMLInputElement>(null);
-   const mobileRef = useRef<HTMLInputElement>(null);
-   const passwordRef = useRef<HTMLInputElement>(null); 
+  const emailRef = useRef<HTMLInputElement>(null);
+  const firstNameRef = useRef<HTMLInputElement>(null);
+  const lastNameRef = useRef<HTMLInputElement>(null);
+  const mobileRef = useRef<HTMLInputElement>(null);
+  const passwordRef = useRef<HTMLInputElement>(null);
+  const userImgView = useRef<HTMLImageElement>(null);
+  const userImgRef = useRef<HTMLInputElement>(null);
   const hasFetched = useRef(false);
-  console.log(emailRef.current?.value );
-  const profileList = useSelector(
-    (state: RootState) => state.profile.value
-  );
-  const profileData = profileList
+
+  const profileList = useSelector((state: RootState) => state.profile.value);
+  const profileData = profileList;
+
+ const handleImageUpload = async (): Promise<void> => {
+   const ImgFile = userImgRef.current?.files?.[0];
+   if (!ImgFile) return;
+
+   // Validate file type
+   const validTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/svg+xml'];
+   if (!validTypes.includes(ImgFile.type)) {
+     ErrorToast('Please select a valid image file (JPG, PNG, SVG)');
+     return;
+   }
+
+   // Validate file size (max 4MB)
+   const maxSize = 4 * 1024 * 1024; // 4MB in bytes
+   if (ImgFile.size > maxSize) {
+     ErrorToast('Image size must be less than 4MB');
+     return;
+   }
+   try {
+     const base64Img = await getBase64(ImgFile);
+     if (userImgView.current) {
+       userImgView.current.src = base64Img;
+       SuccessToast('Successfully Upload File');
+     }
+   } catch (error) {
+     if (error instanceof Error) {
+       ErrorToast(error.message);
+     } else {
+       ErrorToast('Failed to upload image');
+     }
+   }
+ };
   useEffect(() => {
     if (hasFetched.current) return; // solve multiple re-render
     hasFetched.current = true;
@@ -29,6 +61,9 @@ const Profile = () => {
         {/* Profile Image */}
         <div className="flex flex-col items-center mb-8">
           <img
+            ref={input => {
+              userImgView.current = input;
+            }}
             src={profileData?.photo}
             alt="User Profile"
             className="w-32 h-32 rounded-full object-cover"
@@ -48,7 +83,7 @@ const Profile = () => {
         >
           {/* Profile Picture */}
           <div className="flex flex-col">
-            <label className="text-lg font-semibold mb-2">
+            <label htmlFor="picture" className="text-lg font-semibold mb-2">
               Profile Picture
             </label>
             <label
@@ -57,7 +92,16 @@ const Profile = () => {
             >
               Upload Image
             </label>
-            <input id="picture" type="file" className="hidden" />
+            <input
+              ref={input => {
+                userImgRef.current = input;
+              }}
+              onChange={handleImageUpload}
+              id="picture"
+              type="file"
+              accept=".jpg,.jpeg,.png,.svg"
+              className="hidden"
+            />
           </div>
 
           {/* Email */}
@@ -65,6 +109,9 @@ const Profile = () => {
             <label className="text-lg font-semibold mb-2">Email Address</label>
             <Input
               readOnly
+              ref={input => {
+                emailRef.current = input;
+              }}
               type="email"
               defaultValue={profileData?.email}
               className="focus-visible:ring-purple-500"
