@@ -12,21 +12,23 @@ import {
 import { Button } from '../ui/button';
 import { Card, CardContent, CardFooter, CardTitle } from '../ui/card';
 import { Input } from '../ui/input';
+import { defultPhoto } from '../../assets/images/constant';
 const Registration = () => {
   const emailRef = useRef<HTMLInputElement>(null);
   const firstNameRef = useRef<HTMLInputElement>(null);
   const lastNameRef = useRef<HTMLInputElement>(null);
   const mobileRef = useRef<HTMLInputElement>(null);
   const passwordRef = useRef<HTMLInputElement>(null); 
-
   const navigate = useNavigate();
-
+  
   const onRegistration = async () => {
     const email = emailRef.current?.value || '';
     const firstName = firstNameRef.current?.value || '';
     const lastName = lastNameRef.current?.value || '';
     const mobile = mobileRef.current?.value || '';
     const password = passwordRef.current?.value || '';
+    const photo = defultPhoto || '';
+    
     if (IsEmail(email)) {
       ErrorToast('Valid Email Adress Required');
     } else if (IsEmpty(firstName)) {
@@ -38,7 +40,7 @@ const Registration = () => {
     } else if (IsEmpty(password)) {
       ErrorToast('Password Required');
     } else {
-      const photo = ''; // Define a default or empty value for photo
+      
        const result = await RegistrationRequest(email, firstName, lastName, mobile, password, photo);
       if (result) {
         navigate('/login');

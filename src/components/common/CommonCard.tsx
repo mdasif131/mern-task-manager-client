@@ -10,6 +10,7 @@ import {
   CardTitle,
 } from '../ui/card';
 interface CommonCardProps {
+  updateStatus: () => void;
   deleteTask: () => void;
   title: string;
   description: string;
@@ -18,7 +19,7 @@ interface CommonCardProps {
   variant: 'default' | 'destructive' | 'greenbtn' | 'skybtn' | 'newtaskbtn';
 }
 
-const CommonCard: React.FC<CommonCardProps> = ({deleteTask, title, description,createDate,status, variant }) => {
+const CommonCard: React.FC<CommonCardProps> = ({updateStatus,deleteTask, title, description,createDate,status, variant }) => {
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -58,7 +59,7 @@ const CommonCard: React.FC<CommonCardProps> = ({deleteTask, title, description,c
                 <Calendar size={18} />
                 <span>{createDate}</span>
               </div>
-              <button className="text-red-400">
+              <button onClick={updateStatus} className="text-red-400">
                 <PencilLine size={18} />
               </button>
               <button onClick={deleteTask} className="ml-2 text-red-400">

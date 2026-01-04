@@ -5,6 +5,7 @@ import { useSelector } from "react-redux";
 import type { RootState } from "../../redux/store/store";
 import type { Task } from '../../helper/types';
 import { DeleteAlert } from "../../helper/deleteAlert";
+import { UpdateAlertTodo } from "../../helper/updateAlert";
 const New = () => {
   const newList = useSelector((state: RootState) => state.task.New);
   const hasFetched = useRef(false);
@@ -15,9 +16,17 @@ const New = () => {
       if (result) {
         GetTaskRequestByStatus('New');
       }
-    })
-    
+    })  
   }
+  const StatusChangeItem=(id: string, status: string)=>{
+    UpdateAlertTodo(id, status).then((result) => {
+      if (result) {
+       GetTaskRequestByStatus('New');
+    }
+  })
+}
+
+
    useEffect(() => {
      if (hasFetched.current) return; // useRef use for prevent re-rander issue
      hasFetched.current = true;
@@ -31,6 +40,7 @@ const New = () => {
         {newList.map((item: Task) => (
           <div key={item._id} className="flex-1">
             <CommonCard
+              updateStatus={StatusChangeItem.bind(this, item._id, item.status)}
               deleteTask={DeleteItem.bind(this, item._id)}
               title={item.title}
               description={item.description}

@@ -5,6 +5,7 @@ import type { RootState } from '../../redux/store/store';
 import type { Task } from '../../helper/types';
 import { useSelector } from 'react-redux';
 import { DeleteAlert } from "../../helper/deleteAlert";
+import { UpdateAlertTodo } from "../../helper/updateAlert";
 const Completed = () => {
    const completedList = useSelector((state: RootState) => state.task.Completed);
   const hasFetched = useRef(false);
@@ -12,6 +13,13 @@ const Completed = () => {
 
     const DeleteItem = (id: string) => {
       DeleteAlert(id).then(result => {
+        if (result) {
+          GetTaskRequestByStatus('Completed');
+        }
+      });
+  };
+    const StatusChangeItem = (id: string, status: string) => {
+      UpdateAlertTodo(id, status).then(result => {
         if (result) {
           GetTaskRequestByStatus('Completed');
         }
@@ -34,6 +42,7 @@ const Completed = () => {
                title={item.title}
                description={item.description}
                createDate={item.createDate}
+               updateStatus={StatusChangeItem.bind(this, item._id, item.status)}
                deleteTask={DeleteItem.bind(this, item._id)}
                status={item.status}
                variant="greenbtn"

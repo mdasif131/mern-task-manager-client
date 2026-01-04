@@ -1,3 +1,4 @@
+import type { IUser } from "./types";
 
 class SessionHelper{
   setToken(token: string) {
@@ -6,15 +7,20 @@ class SessionHelper{
   getToken(): string | null {
     return localStorage.getItem("token");
   }
-  setUserInfo(data:string){
+  setUserInfo(data:IUser){
     localStorage.setItem("UserInfo", JSON.stringify(data))
   }
-  getUerInfo():string | null {
+  getUerInfo():IUser | null {
     let info = localStorage.getItem("UserInfo");
     if (info) { 
-      return JSON.parse(info);
+      return JSON.parse(info) as IUser;
     }
     return null;
   }
+  removeSession(): void {
+    localStorage.clear();
+    window.location.href = '/login';
+  }
 } 
-export const {setToken,getToken,setUserInfo, getUerInfo} = new SessionHelper();
+export const { setToken, getToken, setUserInfo, getUerInfo, removeSession } =
+  new SessionHelper();

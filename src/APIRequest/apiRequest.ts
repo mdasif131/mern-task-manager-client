@@ -179,4 +179,21 @@ export async function DeleteRequest(id: string) {
   } finally {
     store.dispatch(HideLoader());
   }
+} 
+
+export async function UpdateStatusRequest(id: string, status: TaskStatus) {
+  store.dispatch(ShowLoader());
+  const URL: string = `${BaseURL}/update-task/${id}/${status}`;
+  try {
+    const res = await axios.get(URL, AxiosHeader); 
+    if (res.status === 200) {
+      SuccessToast('Status Updated Successfully');
+      return true;
+    }
+  }catch (error: any) {
+    ErrorToast(error?.response?.data?.message || 'Something went wrong');
+    return false;
+  } finally {
+    store.dispatch(HideLoader());
+  }
 }
