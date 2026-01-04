@@ -164,3 +164,19 @@ export async function SummaryRequest(): Promise<boolean> {
     store.dispatch(HideLoader());
   }
 }
+export async function DeleteRequest(id: string) {
+  store.dispatch(ShowLoader());
+  const URL: string = `${BaseURL}/delete-task/${id}`;
+  try {
+    const res = await axios.delete(URL, AxiosHeader);
+    if (res.status === 200) {
+      SuccessToast('Task Deleted Successfully');
+      return true;
+    }
+  } catch (error: any) {
+    ErrorToast(error?.response?.data?.message || 'Something went wrong');
+    return false;
+  } finally {
+    store.dispatch(HideLoader());
+  }
+}

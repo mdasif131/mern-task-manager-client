@@ -4,9 +4,20 @@ import { GetTaskRequestByStatus } from "../../APIRequest/apiRequest";
 import { useSelector } from "react-redux";
 import type { RootState } from "../../redux/store/store";
 import type { Task } from '../../helper/types';
+import { DeleteAlert } from "../../helper/deleteAlert";
 const New = () => {
   const newList = useSelector((state: RootState) => state.task.New);
-   const hasFetched = useRef(false);
+  const hasFetched = useRef(false);
+  
+
+  const DeleteItem = (id:string)=>{
+    DeleteAlert(id).then((result) => {
+      if (result) {
+        GetTaskRequestByStatus('New');
+      }
+    })
+    
+  }
    useEffect(() => {
      if (hasFetched.current) return; // useRef use for prevent re-rander issue
      hasFetched.current = true;
@@ -20,6 +31,7 @@ const New = () => {
         {newList.map((item: Task) => (
           <div key={item._id} className="flex-1">
             <CommonCard
+              deleteTask={DeleteItem.bind(this, item._id)}
               title={item.title}
               description={item.description}
               createDate={item.createDate}

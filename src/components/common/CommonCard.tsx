@@ -1,5 +1,6 @@
-import { Button } from '../ui/button';
+import { Calendar, PencilLine, Trash2 } from 'lucide-react';
 import { motion } from 'motion/react';
+import { Button } from '../ui/button';
 import {
   Card,
   CardContent,
@@ -8,8 +9,8 @@ import {
   CardHeader,
   CardTitle,
 } from '../ui/card';
-import { Calendar, Trash2, PencilLine } from 'lucide-react';
 interface CommonCardProps {
+  deleteTask: () => void;
   title: string;
   description: string;
   status?: string;
@@ -17,7 +18,7 @@ interface CommonCardProps {
   variant: 'default' | 'destructive' | 'greenbtn' | 'skybtn' | 'newtaskbtn';
 }
 
-const CommonCard: React.FC<CommonCardProps> = ({ title, description,createDate,status, variant }) => {
+const CommonCard: React.FC<CommonCardProps> = ({deleteTask, title, description,createDate,status, variant }) => {
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -60,7 +61,7 @@ const CommonCard: React.FC<CommonCardProps> = ({ title, description,createDate,s
               <button className="text-red-400">
                 <PencilLine size={18} />
               </button>
-              <button className="ml-2 text-red-400">
+              <button onClick={deleteTask} className="ml-2 text-red-400">
                 <Trash2 size={18} />
               </button>
             </div>
