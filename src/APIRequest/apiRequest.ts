@@ -1,6 +1,11 @@
 import axios from 'axios';
 import { ErrorToast, SuccessToast } from '../helper/formHelper';
-import { getToken, setToken, setUserInfo } from '../helper/sessionHelper';
+import {
+  getToken,
+  setToken,
+  setUserInfo,
+  getUerInfo,
+} from '../helper/sessionHelper';
 import { HideLoader, ShowLoader } from '../redux/state_slice/settingSlice';
 import { store } from '../redux/store/store';
 import {
@@ -11,6 +16,7 @@ import {
 } from '../redux/state_slice/taskSlice';
 import type {
   CreateTaskRequestBody,
+  IUserDetails,
   LoginRequestBody,
   RegistrationRequestBody,
 } from '../helper/types';
@@ -208,6 +214,57 @@ export async function GetProfileDetails(): Promise<boolean> {
     return true;
   } catch (error: any) {
     ErrorToast(error?.response?.data?.data || 'Something went wrong');
+    return false;
+  } finally {
+    store.dispatch(HideLoader());
+  }
+}
+
+export async function ProfileUpdateRequest(
+  email: string,
+  firstName: string,
+  lastName: string,
+  mobile: string,
+  password: string,
+  photo: string
+) {
+  store.dispatch(ShowLoader());
+  const URL: string = `${BaseURL}/update`;
+  const PostBody: RegistrationRequestBody = {
+    email: email,
+    firstName: firstName,
+    lastName: lastName,
+    mobile: mobile,
+    password: password,
+    photo: photo,
+  }; 
+
+    const currentProfile = getUerInfo()
+     const userId = currentProfile?._id;
+
+    if (!userId) {
+      ErrorToast('User ID not found');
+      store.dispatch(HideLoader());
+      return false;
+    }
+  let UserDetails: IUserDetails = {
+    _id: userId,
+    email: email,
+    firstName: firstName,
+    lastName: lastName,
+    mobile: mobile,
+    photo: photo,
+  }; 
+
+  try {
+    const res = await axios.put(URL, PostBody, AxiosHeader);
+    if (res.status === 200) {
+      setUserInfo(UserDetails);
+      SuccessToast('Profile Updated Successfully');
+      return true;
+    }
+  } catch (error: any) {
+    ErrorToast(error?.response?.data?.message || 'Something went wrong');
     return false;
   } finally {
     store.dispatch(HideLoader());

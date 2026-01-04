@@ -1,12 +1,24 @@
 import { useEffect, useRef } from 'react';
-import { GetProfileDetails } from '../../APIRequest/apiRequest';
+import {
+  GetProfileDetails,
+  ProfileUpdateRequest,
+} from '../../APIRequest/apiRequest';
 import { useSelector } from 'react-redux';
 import type { RootState } from '../../redux/store/store';
 import { Input } from '../ui/input';
 import { Button } from '../ui/button';
-import { ErrorToast, getBase64, SuccessToast } from '../../helper/formHelper';
+import {
+  ErrorToast,
+  getBase64,
+  IsEmail,
+  IsEmpty,
+  IsMobile,
+  SuccessToast,
+} from '../../helper/formHelper';
+import { useNavigate } from 'react-router-dom';
 
 const Profile = () => {
+  const navigate = useNavigate()
   const emailRef = useRef<HTMLInputElement>(null);
   const firstNameRef = useRef<HTMLInputElement>(null);
   const lastNameRef = useRef<HTMLInputElement>(null);
@@ -19,37 +31,76 @@ const Profile = () => {
   const profileList = useSelector((state: RootState) => state.profile.value);
   const profileData = profileList;
 
- const handleImageUpload = async (): Promise<void> => {
-   const ImgFile = userImgRef.current?.files?.[0];
-   if (!ImgFile) return;
+  const handleImageUpload = async (): Promise<void> => {
+    const ImgFile = userImgRef.current?.files?.[0];
+    if (!ImgFile) return;
 
-   // Validate file type
-   const validTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/svg+xml'];
-   if (!validTypes.includes(ImgFile.type)) {
-     ErrorToast('Please select a valid image file (JPG, PNG, SVG)');
-     return;
-   }
+    // Validate file type
+    const validTypes = [
+      'image/jpeg',
+      'image/jpg',
+      'image/png',
+      'image/svg+xml',
+    ];
+    if (!validTypes.includes(ImgFile.type)) {
+      ErrorToast('Please select a valid image file (JPG, PNG, SVG)');
+      return;
+    }
 
-   // Validate file size (max 4MB)
-   const maxSize = 4 * 1024 * 1024; // 4MB in bytes
-   if (ImgFile.size > maxSize) {
-     ErrorToast('Image size must be less than 4MB');
-     return;
-   }
-   try {
-     const base64Img = await getBase64(ImgFile);
-     if (userImgView.current) {
-       userImgView.current.src = base64Img;
-       SuccessToast('Successfully Upload File');
-     }
-   } catch (error) {
-     if (error instanceof Error) {
-       ErrorToast(error.message);
-     } else {
-       ErrorToast('Failed to upload image');
-     }
-   }
- };
+    // Validate file size (max 4MB)
+    const maxSize = 4 * 1024 * 1024; // 4MB in bytes
+    if (ImgFile.size > maxSize) {
+      ErrorToast('Image size must be less than 4MB');
+      return;
+    }
+    try {
+      const base64Img = await getBase64(ImgFile);
+      if (userImgView.current) {
+        userImgView.current.src = base64Img;
+        SuccessToast('Successfully Upload File');
+      }
+    } catch (error) {
+      if (error instanceof Error) {
+        ErrorToast(error.message);
+      } else {
+        ErrorToast('Failed to upload image');
+      }
+    }
+  };
+
+  const updateMyProfile = async (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    const email = emailRef.current?.value || '';
+    const firstName = firstNameRef.current?.value || '';
+    const lastName = lastNameRef.current?.value || '';
+    const mobile = mobileRef.current?.value || '';
+    const password = passwordRef.current?.value || '';
+    const photo = userImgView.current?.src || '';
+
+    if (IsEmail(email)) {
+      ErrorToast('Valid Email Adress Required');
+    } else if (IsEmpty(firstName)) {
+      ErrorToast('First Name Required');
+    } else if (IsEmpty(lastName)) {
+      ErrorToast('Last Name Required');
+    } else if (!IsMobile(mobile)) {
+      ErrorToast('Valid Mobile Required');
+    } else if (IsEmpty(password)) {
+      ErrorToast('Password Required');
+    } else {
+      const result = await ProfileUpdateRequest(
+        email,
+        firstName,
+        lastName,
+        mobile,
+        password,
+        photo
+      );
+      if (result) {
+        navigate('/');
+      }
+    }
+  };
   useEffect(() => {
     if (hasFetched.current) return; // solve multiple re-render
     hasFetched.current = true;
@@ -173,7 +224,12 @@ const Profile = () => {
 
           {/* Update Button */}
           <div className="col-span-1 md:col-span-2 lg:col-span-3 flex justify-center pt-4">
-            <Button size="lg" variant="secondary" className="w-full max-w-md">
+            <Button
+              onClick={updateMyProfile}
+              size="lg"
+              variant="secondary"
+              className="w-full max-w-md"
+            >
               UPDATE
             </Button>
           </div>

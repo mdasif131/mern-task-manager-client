@@ -6,6 +6,15 @@ export interface RegistrationRequestBody {
   password: string;
   photo: string;
 }
+export interface IUserDetails {
+  _id: string;
+  email: string;
+  firstName: string;
+  lastName: string;
+  mobile: string;
+  password?: string;
+  photo: string;
+}
 export interface LoginRequestBody {
   email: string;
   password: string;

@@ -8,16 +8,20 @@ const MyDropDown = () => {
   }
   return (
     <div className="relative group">
-      <div className="w-15 h-15 inline-flex items-center justify-center rounded-full">
-        <img src={userInfo?.photo} alt="profile image" className="" />
+      <div className="w-15 h-15 flex flex-col justify-center items-center ">
+        <img
+          src={userInfo?.photo}
+          alt="profile image"
+          className="w-32 h-32 rounded-full object-cover"
+        />
       </div>
       <div className="hidden group-hover:block absolute bg-white w-65 right-0! top-16 z-10 shadow-lg rounded transition-all duration-300 ease-in-out mx-auto">
         <div className="flex flex-col items-center justify-center border-y py-4 gap-y-2">
-          <div className="w-18 h-18 flex items-center justify-center rounded-full mx-auto">
+          <div className="w-18 h-18 flex flex-col items-center justify-center rounded-full mx-auto">
             <img
               src={userInfo?.photo}
               alt="profile image"
-              className="inline-flex items-center justify-center"
+              className="w-32 h-32 rounded-full object-cover"
             />
           </div>
           <h6 className="text-xl font-bold">{`${userInfo?.firstName} ${userInfo?.lastName}`}</h6>
