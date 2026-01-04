@@ -15,6 +15,7 @@ import type {
   RegistrationRequestBody,
 } from '../helper/types';
 import { SetSummary } from '../redux/state_slice/summarySlice';
+import { SetProfile } from '../redux/state_slice/profileSlice';
 const BaseURL = 'https://mern-task-manager-backend-cyan.vercel.app/api/v1';
 const AxiosHeader = {
   headers: {
@@ -179,19 +180,34 @@ export async function DeleteRequest(id: string) {
   } finally {
     store.dispatch(HideLoader());
   }
-} 
+}
 
 export async function UpdateStatusRequest(id: string, status: TaskStatus) {
   store.dispatch(ShowLoader());
   const URL: string = `${BaseURL}/update-task/${id}/${status}`;
   try {
-    const res = await axios.get(URL, AxiosHeader); 
+    const res = await axios.get(URL, AxiosHeader);
     if (res.status === 200) {
       SuccessToast('Status Updated Successfully');
       return true;
     }
-  }catch (error: any) {
+  } catch (error: any) {
     ErrorToast(error?.response?.data?.message || 'Something went wrong');
+    return false;
+  } finally {
+    store.dispatch(HideLoader());
+  }
+}
+
+export async function GetProfileDetails(): Promise<boolean> {
+  store.dispatch(ShowLoader());
+  const URL: string = `${BaseURL}/profile-details`;
+  try {
+    const res = await axios.get(URL, AxiosHeader);
+    store.dispatch(SetProfile(res.data?.data));
+    return true;
+  } catch (error: any) {
+    ErrorToast(error?.response?.data?.data || 'Something went wrong');
     return false;
   } finally {
     store.dispatch(HideLoader());
