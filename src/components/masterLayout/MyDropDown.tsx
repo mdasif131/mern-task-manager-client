@@ -1,5 +1,5 @@
 import { LogOut, UserRound } from 'lucide-react';
-import { NavLink } from 'react-router';
+import { NavLink } from 'react-router-dom';
 import { getUerInfo, removeSession } from '../../helper/sessionHelper';
 const MyDropDown = () => { 
   const userInfo = getUerInfo()
@@ -28,7 +28,7 @@ const MyDropDown = () => {
         </div>
         <div className="flex flex-col ">
           <NavLink
-            to={'profile'}
+            to={'/profile'}
             className={`p-3 hover:bg-purple-500/30 hover:border-l-4 hover:border-purple-500`}
           >
             <div className="flex items-center gap-2">
