@@ -144,6 +144,7 @@ const Profile = () => {
               Upload Image
             </label>
             <input
+              key={Date.now()}
               ref={input => {
                 userImgRef.current = input;
               }}
@@ -159,10 +160,12 @@ const Profile = () => {
           <div className="flex flex-col">
             <label className="text-lg font-semibold mb-2">Email Address</label>
             <Input
+              key={Date.now()}
               readOnly
               ref={input => {
                 emailRef.current = input;
               }}
+              id="email"
               type="email"
               defaultValue={profileData?.email}
               className="focus-visible:ring-purple-500"
@@ -173,6 +176,8 @@ const Profile = () => {
           <div className="flex flex-col">
             <label className="text-lg font-semibold mb-2">First Name</label>
             <Input
+              key={Date.now()}
+              id="name"
               type="text"
               defaultValue={profileData?.firstName}
               ref={input => {
@@ -186,6 +191,8 @@ const Profile = () => {
           <div className="flex flex-col">
             <label className="text-lg font-semibold mb-2">Last Name</label>
             <Input
+              key={Date.now()}
+              id="lastName"
               type="text"
               defaultValue={profileData?.lastName}
               ref={input => {
@@ -199,6 +206,7 @@ const Profile = () => {
           <div className="flex flex-col">
             <label className="text-lg font-semibold mb-2">Mobile</label>
             <Input
+              id="mobile"
               ref={input => {
                 mobileRef.current = input;
               }}
@@ -212,6 +220,8 @@ const Profile = () => {
           <div className="flex flex-col">
             <label className="text-lg font-semibold mb-2">Password</label>
             <Input
+              key={Date.now()}
+              id="password"
               ref={input => {
                 passwordRef.current = input;
               }}
