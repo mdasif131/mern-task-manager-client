@@ -4,13 +4,14 @@ import {
   LayersPlus,
   LayoutDashboard,
   NotebookPen,
+  PanelLeftClose,
   SlidersHorizontal,
   SquareMenu,
   SquareX,
 } from 'lucide-react';
 import { motion } from 'motion/react';
-import { useState, type ReactNode } from 'react';
-import { NavLink } from 'react-router';
+import { useEffect, useState, type ReactNode } from 'react';
+import { NavLink, useLocation } from 'react-router-dom';
 import MyDropDown from './MyDropDown';
 
 const SidebarVariants = {
@@ -37,9 +38,17 @@ const itemVariants = {
 };
 const MasterLoayout = ({ children }: { children: ReactNode }) => {
   const [isOpen, setIsOpen] = useState(true);
-
+  const location = useLocation()
+  const profileOpen = location.pathname === '/profile';
+   useEffect(() => {
+     if (profileOpen) {
+       setIsOpen(false);
+     } else {
+       setIsOpen(true);
+     }
+   }, [profileOpen]);
   return (
-    <section className="w-full mx-auto ">
+    <section className="w-full mx-auto  z-100000">
       {/* Nav bar  */}
       <div>
         <nav className="w-full  px-4 md:px-8 py-4 bg-white shadow-lg ">
@@ -62,17 +71,23 @@ const MasterLoayout = ({ children }: { children: ReactNode }) => {
         </nav>
       </div>
 
-      <div className="mx-auto grid w-full grid-cols-12 border-t-2 ">
+      <div className="mx-auto grid w-full grid-cols-12 border-t-2 relative">
         {/* Sidebar  */}
         <motion.div
           initial="closed"
           animate={isOpen ? 'open' : 'closed'}
           variants={SidebarVariants}
           transition={{ type: 'spring', stiffness: 300, damping: 30 }}
-          className={`${
-            isOpen ? 'col-span-2  bg-white min-h-screen' : 'hidden'
+          className={` max-sm:absolute left-0 top-0 max-sm:min-w-75 ${
+            isOpen ? 'col-span-2  bg-white min-h-screen' : "hidden"
           }`}
         >
+          <button
+            onClick={() => setIsOpen(!isOpen)}
+            className="hidden max-sm:block p-2 ml-auto mr-4"
+          >
+            <PanelLeftClose className="text-2xl text-purple-500 " />
+          </button>
           <motion.div
             initial="closed"
             animate={isOpen ? 'open' : 'closed'}
@@ -197,7 +212,7 @@ const MasterLoayout = ({ children }: { children: ReactNode }) => {
 
         {/* Content  */}
         <div
-          className={`w-full mx-auto py-8 px-4! ${
+          className={`w-full mx-auto py-8 px-4!  ${
             isOpen ? 'col-span-10' : 'col-span-12 w-full '
           }`}
         >

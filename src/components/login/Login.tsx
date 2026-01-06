@@ -30,8 +30,8 @@ const Login = () => {
     }
   }
   return (
-    <div className="w-full h-screen flex justify-center items-center">
-      <Card className="w-full max-w-md">
+    <div className="w-full h-screen flex justify-center items-center px-4">
+      <Card className="w-full max-sm:max-w-sm md:max-w-md ">
         <CardTitle className="inline-flex items-center justify-center py-5 text-xl text-gray-900">
           Sing In
         </CardTitle>

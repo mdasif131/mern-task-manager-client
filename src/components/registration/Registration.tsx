@@ -53,9 +53,9 @@ const Registration = () => {
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5, ease: 'easeOut' }}
-      className="w-full h-screen flex justify-center items-center"
+      className="w-full h-screen flex justify-center items-center px-4"
     >
-      <Card className="w-full max-w-md">
+      <Card className="w-full max-w-md max-sm:max-w-sm">
         <CardTitle className="inline-flex items-center justify-center py-5 text-xl text-gray-900">
           Sing Up
         </CardTitle>
@@ -190,7 +190,7 @@ const Registration = () => {
               Sing In
             </Link>
             <Link
-              to={'/forget-password'}
+              to={'/send-otp'}
               className="hover:text-purple-500 hoverTransition"
             >
               Forget Password

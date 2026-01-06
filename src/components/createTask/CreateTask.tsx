@@ -34,13 +34,13 @@ const CreateTask = () => {
 }
 
   return (
-    <div className="flex items-center justify-center p-4">
+    <div className="max-sm:absolute flex items-center justify-center p-4 -z-100 left-0 right-0">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, ease: 'easeOut' }}
       >
-        <Card className="max-w-2xl min-w-sm sm:min-w-2xl shadow-xl bg-white/80 backdrop-blur-sm border border-purple-100">
+        <Card className="max-w-2xl w-full max-sm:min-w-85  sm:min-w-2xl shadow-xl bg-white/80 backdrop-blur-sm border border-purple-100">
           <CardHeader>
             <motion.div
               initial={{ opacity: 0, y: -10 }}

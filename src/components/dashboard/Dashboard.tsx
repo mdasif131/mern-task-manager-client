@@ -13,7 +13,7 @@ const Dashboard = () => {
     SummaryRequest();
   },[])
   return (
-    <div className=" px-4 grid grid-cols-4 gap-6">
+    <div className=" px-4 grid-cols-1 grid md:grid-cols-4 gap-6">
       {summaryList.map((data, index) => (
         <motion.div
           key={index}

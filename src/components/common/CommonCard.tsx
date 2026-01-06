@@ -71,7 +71,7 @@ const CommonCard: React.FC<CommonCardProps> = ({updateStatus,deleteTask, title, 
               whileTap={{ scale: 0.98 }}
               transition={{ type: 'spring', stiffness: 300, damping: 10 }}
             >
-              <Button variant={variant}>{status}</Button>
+              <Button  variant={variant} className='max-sm:px-2 max-sm:ml-2'>{status}</Button>
             </motion.div>
           </motion.div>
         </CardFooter>
