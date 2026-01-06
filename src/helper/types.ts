@@ -43,3 +43,8 @@ export interface IUser {
   createDate?: string;
   id?: string; // Some APIs duplicate _id as id
 }
+export interface IResetPassBody {
+  email: string | null;
+  otp: string | null;
+  password: string;
+}

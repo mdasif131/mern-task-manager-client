@@ -5,13 +5,15 @@ import CanceledPage from './pages/CanceledPage';
 import CompeletedPage from './pages/CompeletedPage';
 import CreatePage from './pages/CreatePage';
 import DashBoardPage from './pages/DashBoardPage';
-import ForgetPssPage from './pages/ForgetPssPage';
 import LoginPage from './pages/LoginPage';
 import NewPage from './pages/NewPage';
 import Page404 from './pages/Page404';
 import ProfilePage from './pages/ProfilePage';
 import ProgressPage from './pages/ProgressPage';
 import RegistrationPage from './pages/RegistrationPage';
+import SendOTP from './components/accountRecover/SendOTP';
+import VerifyOTP from './components/accountRecover/VerifyOTP';
+import CreatePassword from './components/accountRecover/CreatePassword';
 const App = () => {
   return (
     <>
@@ -19,8 +21,11 @@ const App = () => {
         <Routes>
           {/* Public routes */}
           <Route path="/login" element={<LoginPage />} />
-          <Route path="/registration" element={<RegistrationPage />} />
-          <Route path="/forget-password" element={<ForgetPssPage />} />
+          <Route path="/registration" element={<RegistrationPage />} />   
+          <Route path="/send-otp" element={<SendOTP />} />
+          <Route path="/verify-otp" element={<VerifyOTP />} />
+          <Route path="/create-password" element={<CreatePassword />} />
+          
 
           {/* Protected Routes */}
           <Route path="/" element={<PrivateRoute />}>

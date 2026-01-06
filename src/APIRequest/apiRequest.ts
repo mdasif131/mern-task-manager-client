@@ -5,6 +5,8 @@ import {
   setToken,
   setUserInfo,
   getUerInfo,
+  setEamil,
+  setOTP,
 } from '../helper/sessionHelper';
 import { HideLoader, ShowLoader } from '../redux/state_slice/settingSlice';
 import { store } from '../redux/store/store';
@@ -16,6 +18,7 @@ import {
 } from '../redux/state_slice/taskSlice';
 import type {
   CreateTaskRequestBody,
+  IResetPassBody,
   IUserDetails,
   LoginRequestBody,
   RegistrationRequestBody,
@@ -237,16 +240,16 @@ export async function ProfileUpdateRequest(
     mobile: mobile,
     password: password,
     photo: photo,
-  }; 
+  };
 
-    const currentProfile = getUerInfo()
-     const userId = currentProfile?._id;
+  const currentProfile = getUerInfo();
+  const userId = currentProfile?._id;
 
-    if (!userId) {
-      ErrorToast('User ID not found');
-      store.dispatch(HideLoader());
-      return false;
-    }
+  if (!userId) {
+    ErrorToast('User ID not found');
+    store.dispatch(HideLoader());
+    return false;
+  }
   let UserDetails: IUserDetails = {
     _id: userId,
     email: email,
@@ -254,7 +257,7 @@ export async function ProfileUpdateRequest(
     lastName: lastName,
     mobile: mobile,
     photo: photo,
-  }; 
+  };
 
   try {
     const res = await axios.put(URL, PostBody, AxiosHeader);
@@ -263,6 +266,67 @@ export async function ProfileUpdateRequest(
       SuccessToast('Profile Updated Successfully');
       return true;
     }
+  } catch (error: any) {
+    ErrorToast(error?.response?.data?.message || 'Something went wrong');
+    return false;
+  } finally {
+    store.dispatch(HideLoader());
+  }
+}
+
+// Recover Verify Email Request Step -01
+export async function RecoverVerifyEmailRequest(
+  email: string
+): Promise<boolean> {
+  store.dispatch(ShowLoader());
+  let URL: string = `${BaseURL}/recover-verify-email/${email}`;
+  try {
+    const res = await axios.get(URL);
+    if (res.status === 200) {
+      setEamil(email);
+      SuccessToast('A 6 Digit OTP sent to your email address');
+    }
+    return true;
+  } catch (error: any) {
+    ErrorToast(error?.response?.data?.message || 'Something went wrong');
+    return false;
+  } finally {
+    store.dispatch(HideLoader());
+  }
+}
+// Recover Verify Email Request Step -02
+export async function RecoverVerifyOTPRequest(
+  email: string | null,
+  otp: string
+): Promise<boolean> {
+  store.dispatch(ShowLoader());
+  let URL: string = `${BaseURL}/recover-verify-otp/${email}/${otp}`;
+  try {
+    await axios.get(URL);
+    setOTP(otp);
+    SuccessToast('OTP Verify Success');
+    return true;
+  } catch (error: any) {
+    ErrorToast(error?.response?.data?.message || 'Something went wrong');
+    return false;
+  } finally {
+    store.dispatch(HideLoader());
+  }
+}
+// Recover Verify Email Request Step -03
+export async function RecoverResetPassRequest(
+  email: string | null,
+  otp: string | null,
+  password: string
+) {
+  store.dispatch(ShowLoader());
+  let URL: string = `${BaseURL}/recover-reset-password`;
+  let PostBody: IResetPassBody = { email: email, otp: otp, password: password };
+  try {
+    await axios.post(URL, PostBody);
+
+    SuccessToast('Reset Password Successfully');
+    return true;
   } catch (error: any) {
     ErrorToast(error?.response?.data?.message || 'Something went wrong');
     return false;

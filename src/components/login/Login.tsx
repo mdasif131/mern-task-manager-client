@@ -85,7 +85,7 @@ const Login = () => {
               Sing Up
             </Link>
             <Link
-              to={'/forget-password'}
+              to={'/send-otp'}
               className="hover:text-purple-500 hoverTransition"
             >
               Forget Password
